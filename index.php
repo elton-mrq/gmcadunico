@@ -4,7 +4,6 @@ require __DIR__ . '/includes/app.php';
 
 use App\Http\Router;
 
-
 //INICIA O ROUTER
 $obRouter = new Router(getenv('URL'));
 

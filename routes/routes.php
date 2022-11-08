@@ -25,12 +25,22 @@ $obRouter->get('/pessoas', [
     }
 ]);
 
-//ROTA DE PESSOAS (INSERT)
-$obRouter->post('/pessoas', [
-    function($request){
-        echo '<pre>'; print_r($request); echo '<pre>'; exit;
+
+//ROTA PARA RENDERIZAR PÁGINA DE CADASTRO DE PESSOAS
+$obRouter->get('/pessoas/cadastrar', [
+    function(){
+        return new Response(200, Pages\PeopleController::create());
     }
 ]);
+
+//ROTA DE PESSOAS (INSERT)
+$obRouter->post('/pessoas/cadastrar', [
+    function($request){
+        return new Response(200, Pages\PeopleController::insertPeople($request));
+        //echo '<pre>'; print_r($request); echo '<pre>'; exit;
+    }
+]);
+
 
 $obRouter->get('/pagina/{idPagina}/{acao}', [
     function($idPagina, $acao){

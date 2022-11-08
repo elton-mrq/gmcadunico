@@ -87,12 +87,13 @@ class Database{
      */
     private function execute($query, $params = [])
     {
-
+        //echo '<pre>'; print_r($query); echo '<pre>'; exit;
         try {
             $stmt = $this->connection->prepare($query);
             $stmt->execute($params);
+            return $stmt;
         } catch (PDOException $ex) {
-            throw new Exception("Erro ao executar query: " . $ex->getMessage(), 500);
+            throw new Exception("Erro ao executar query: " . $ex->getMessage(), 500);            
         }
 
     }
@@ -105,12 +106,11 @@ class Database{
     public function insert($values)
     {
         //DADOS DA QUERY
-        $fields = array_keys($values);
+        $fields = array_keys($values);;
         $binds  = array_pad([], count($fields), '?');
 
         //MONTA QUERY
         $query = 'INSERT INTO ' . $this->table . ' (' . implode(',', $fields) . ') VALUES (' . implode(',', $binds) . ')';
-
         //CHAMA O MÉTODO QUE EXECUTA O INSERT
         $this->execute($query, array_values($values));
 
