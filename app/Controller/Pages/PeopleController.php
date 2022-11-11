@@ -5,21 +5,34 @@ namespace App\Controller\Pages;
 use App\Utils\View;
 use App\Model\Entity\PeopleEntity;
 use App\Model\DAO\PeopleDAO;
-use DateTime;
+use App\DatabaseManager\Pagination;
+use App\Http\Request;
 
 class PeopleController extends PageController
 {
 
     /**
      * Método que obtém os registros de pessoas do BD
+     * @param Request $request
+     * @param Pagination $obPagination
      * @return string
      */
-    private static function getPersonItems()
+    private static function getPersonItems($request, &$obPagination)
     {
         $itens = '';
 
+        //QUANTIDADE TOTAL DE REGISTROS
+        $quantidadeTotal = PeopleDAO::getPessoas(null, null, null, 'COUNT(*) as qtd')->fetchObject()->qtd;
+
+        //PAGINA ATUAL
+        $queryParams = $request->getQueryParams();
+        $paginaAtual = $queryParams['page'] ?? 1;
+
+        //INSTANCIA DE PAGINAÇÃO
+        $obPagination = new Pagination($quantidadeTotal, $paginaAtual, 2);
+
         //RESULTADOS DO SELECT DOS DADOS DE PESSOAS CADASTRADAS
-        $results = PeopleDAO::getPessoas(null, 'id DESC');
+        $results = PeopleDAO::getPessoas(null, 'id DESC', $obPagination->getLimit());
         
        // echo '<pre>'; print_r($results); echo '<pre>'; exit;
         //RENDERIZA O ITEM
@@ -41,13 +54,15 @@ class PeopleController extends PageController
 
     /**
      * Reponsável por retornar lista de pessoas cadastradas
+     * @param Request $request
      * @return string
      */
-    public static function getPeoples()
+    public static function getPeoples($request)
     {
        
         $content = View::render('people/index', [
-          'items'   => self::getPersonItems()  
+          'items'       => self::getPersonItems($request, $obPagination),
+          'pagination'  => parent::getPagination($request, $obPagination)
         ]);
 
         return parent::getPage('Pessoas Cadastradas ', $content);
@@ -60,9 +75,6 @@ class PeopleController extends PageController
      */
     public static function create()
     {
-        //Dados do Post
-        //$postVar = $request->getPostVars();
-       
         $content = View::render('people/create');
         return PageController::getPage('Cadastrar Pessoas', $content);
     }
@@ -88,7 +100,8 @@ class PeopleController extends PageController
         $obPeopleDAO = new PeopleDAO();
         $id = $obPeopleDAO->insert($obPeople);
 
-        return self::getPeoples();
+        //RETORNA A PARGINA DE LISTAGEM DE PESSOAS
+        return self::getPeoples($request);
     }
     
 

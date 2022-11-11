@@ -20,8 +20,8 @@ $obRouter->get('/sobre', [
 
 //ROTA DA Pessoas Cadastradas
 $obRouter->get('/pessoas', [
-    function(){
-        return new Response(200, Pages\PeopleController::getPeoples());
+    function($request){        
+        return new Response(200, Pages\PeopleController::getPeoples($request));
     }
 ]);
 

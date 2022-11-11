@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'c65201e45171f09115131549d3580d31103813de',
+        'reference' => '054d679ae30a1d8cd2eb14cc1f8a81c7c41d892d',
         'name' => 'cadunico/manager',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'c65201e45171f09115131549d3580d31103813de',
+            'reference' => '054d679ae30a1d8cd2eb14cc1f8a81c7c41d892d',
             'dev_requirement' => false,
         ),
         'william-costa/database-manager' => array(
