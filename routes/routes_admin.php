@@ -21,7 +21,7 @@ $obRouter->get('/admin/login', [
 //ROTA DE LOGIN (POST)
 $obRouter->post('/admin/login', [
     function($request){
-        echo '<pre>'; print_r($request->getPostVars()); echo '<pre>'; exit;
-        return new Response(200, LoginController::getLogin($request));
+       // echo password_hash('123456', PASSWORD_DEFAULT); exit;       
+        return new Response(200, LoginController::setLogin($request));
     }
 ]);
