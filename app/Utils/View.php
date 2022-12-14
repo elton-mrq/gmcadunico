@@ -37,9 +37,10 @@ class View
      */
     public static function render($view, $vars = [])
     {
+        
         //CONTEUDO DA VIEW
         $contentView = self::getContentView($view);
-
+        
         //MERGE OU JUNÇÃO DE VARIAVEIS DA VIEW
         $vars = array_merge(self::$vars, $vars);
 

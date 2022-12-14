@@ -4,8 +4,8 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use App\Utils\View;
 use App\DatabaseManager\Database;
-
 use App\Common\Environment;
+use App\Http\Middleware\Queue as MiddlewareQueue;
 
 
 Environment::load(__DIR__.'/../');
@@ -22,4 +22,14 @@ Database::config(
 //DEFINE VALOR PADRAO DAS VARIAVEIS
 View::init([
     'URL' => getenv('URL')
+]);
+
+
+MiddlewareQueue::setMap([
+    'maintenance'  => App\Http\Middleware\Maintenance::class
+]);
+
+//DEFINE O MAPEAMENTO DE MIDDLEWARE PADROES
+MiddlewareQueue::setDefault([
+    'maintenance'  
 ]);

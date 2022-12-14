@@ -14,11 +14,7 @@ class HomeController extends PageController
      */
     public static function getHome()
     {
-        $obOrganization = new Organization;
-
-        $content = View::render('pages/home', [
-            'name'          => $obOrganization->name
-        ]);
+        $content = View::render('pages/home', []);
 
         //RETORNA A VIEW DA HOME
         return parent::getPage('Home > Cadun', $content);
