@@ -26,10 +26,14 @@ View::init([
 
 
 MiddlewareQueue::setMap([
-    'maintenance'  => App\Http\Middleware\Maintenance::class
+    'maintenance'               => App\Http\Middleware\Maintenance::class,
+    'require-admin-logout'      => App\Http\Middleware\RequireAdminLogout::class,
+    'require-admin-login'       => App\Http\Middleware\RequireAdminLogin::class
 ]);
 
 //DEFINE O MAPEAMENTO DE MIDDLEWARE PADROES
 MiddlewareQueue::setDefault([
     'maintenance'  
 ]);
+
+

@@ -205,6 +205,20 @@ class Router
     }
 
     /**
+     * Método que redireciona a URL
+     * @param string $route
+     */
+    public function redirect($route)
+    {
+        //URL
+        $url = $this->url . $route;
+
+       //EXECUTE O REDIRECT
+       header('location: ' . $url);
+       exit;
+    }
+
+    /**
      * Responsável por definir as rotas de GET
      * @param string $route
      * @param array $params

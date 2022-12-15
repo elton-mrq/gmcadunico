@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Utils\View;
+use App\Session\Admin\SessionLogin;
 use App\Model\Entity\UserEntity as User;
 
 class LoginController extends PageAdminController
@@ -55,8 +56,27 @@ class LoginController extends PageAdminController
         if(!password_verify($senha, $user->senha)){
             return self::getLogin($request, 'E-mail ou senha inválidos!');
         }
-        echo '<pre>'; print_r($user); exit;
+        
+        //CRIA A SESSAO DE LOGIN
+        SessionLogin::login($user);
+        
+        //REDIRECIONA O USUARIO PARA HOME ADMIN
+        $request->getRouter()->redirect('/admin');
 
+    }
+
+    /**
+     * Método que executa o logout do usuário
+     * @param Request $request
+     * @return void
+     */
+    public static function setLogout($request)
+    {
+        //DESTROI A SESSÃO DE LOGIN
+        SessionLogin::logout();
+
+        //REDIRECIONA O USUÁRIO PARA TELA DE LOGIN
+        $request->getRouter()->redirect('/admin/login');
     }
 
 }
