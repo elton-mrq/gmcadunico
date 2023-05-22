@@ -13,6 +13,7 @@ class View
 
     public static function init($vars = [])
     {
+        
         self::$vars = $vars;
     }
 
@@ -29,14 +30,13 @@ class View
     }
 
     /**
-     * Método responsável por retornar por renderizar uma view
+     * Método responsável por renderizar uma view
      *
      * @param string $view
      * @param array $vars (string/numeric)
      * @return string
      */
-    public static function render($view, $vars = [])
-    {
+    public static function render($view, $vars = [])   {
         
         //CONTEUDO DA VIEW
         $contentView = self::getContentView($view);
@@ -45,11 +45,11 @@ class View
         $vars = array_merge(self::$vars, $vars);
 
         //CHAVES DO ARRAY DE VARIAVEIS
-        $keys = array_keys($vars);
+        $keys = array_keys($vars);        
+
         $keys = array_map(function($item){
             return '{{'.$item.'}}';    
         }, $keys);
-
 
         //RETORNA CONTEÚDO RENDERIZADO
         return str_replace($keys, array_values($vars), $contentView);

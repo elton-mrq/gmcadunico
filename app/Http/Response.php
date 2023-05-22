@@ -66,6 +66,7 @@ class Response
      */
     public function addHeaders($key, $value)
     {
+        //echo '<pre>'; print_r($key); echo '<pre>'; exit;
         $this->headers[$key] = $value;
     }
 

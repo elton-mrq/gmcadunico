@@ -126,12 +126,13 @@ class Database{
      */
     public function update($where, $values)
     {
+        
         //TRATA OS DADOS
-        $fields = array_values($values);
-
+        $fields = array_keys($values);
+        
         //MONTA A QUERY
         $query = "UPDATE $this->table SET " . implode(' = ?, ', $fields) . " = ? WHERE $where";
-
+        
         //EXECUTA A QUERY
         $this->execute($query, array_values($values));
 
