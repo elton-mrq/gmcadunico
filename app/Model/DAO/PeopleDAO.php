@@ -43,7 +43,7 @@ class PeopleDAO
      */
     public static function cadastrar($people)
     {
-        if (isset($people)) {
+        if (!isset($people)) {
           
             $people->setId((new Database('pessoa'))->insert([
                 'nome'    => $people->getNome(),

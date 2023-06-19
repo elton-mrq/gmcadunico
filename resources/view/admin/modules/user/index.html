@@ -1,0 +1,30 @@
+<h1>Pessoas Cadastradas</h1>
+<hr>
+
+<a href="{{URL}}/admin/usuario/new"><button type="b
+    " class="btn btn-success">Cadastrar Usuário</button></a>
+
+<hr>
+
+<section id="people">
+
+    {{status}}
+
+    <table class="table table-striped table-sm" style="margin-bottom: 1rem;">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th style="width: 350px;">Nome</th>
+                <th>E-mail</th>
+                <th>Status</th>
+                <th style="width: 200px;">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{items}}
+        </tbody>
+    </table>
+    {{pagination}}
+    
+</section>
+

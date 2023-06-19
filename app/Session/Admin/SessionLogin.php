@@ -28,9 +28,9 @@ class SessionLogin
 
         //DEFINE A SESSÃO DO USUÁRIO
         $_SESSION['admin']['usuario'] = [
-            'id'        => $obUser->id,
-            'nome'      => $obUser->nome,
-            'email'     => $obUser->email
+            'id'        => $obUser->getId(),
+            'nome'      => $obUser->getNome(),
+            'email'     => $obUser->getEmail()
         ];
 
         //SUCESSO

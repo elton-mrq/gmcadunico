@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Utils\View;
 use App\Session\Admin\SessionLogin;
 use App\Model\Entity\UserEntity as User;
+use App\Model\DAO\UserDAO;
 use App\Controller\Admin\AlertController;
 
 class LoginController extends PageAdminController
@@ -44,7 +45,7 @@ class LoginController extends PageAdminController
         $senha = $postVars['senha'] ?? '';
 
         //BUSCA USUARIO PELO EMAIL
-        $user = User::getUserByEmail($email);
+        $user = UserDAO::getUserByEmail($email);        
 
         //VERIFICA SE NAO EXISTE USUARIO
         if(!$user instanceof User){
@@ -52,8 +53,8 @@ class LoginController extends PageAdminController
         }
 
         //VERIFICA A SENHA DO USUARIO
-        if(!password_verify($senha, $user->senha)){
-            return self::getLogin($request, 'E-mail ou senha inválidos!');
+        if(!password_verify($senha, $user->getSenha())){
+            return self::getLogin($request, 'Senha inválida!');
         }
         
         //CRIA A SESSAO DE LOGIN
@@ -77,5 +78,7 @@ class LoginController extends PageAdminController
         //REDIRECIONA O USUÁRIO PARA TELA DE LOGIN
         $request->getRouter()->redirect('/admin/login');
     }
+
+    //echo '<pre>'; print_r($user); echo '<pre>'; exit;
 
 }

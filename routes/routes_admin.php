@@ -8,3 +8,6 @@ include __DIR__ . '/admin/routesLogin.php';
 
 //INCLUI AS ROTAS DE PESSOAS
 include __DIR__ .'/admin/routesPeopleAdmin.php';
+
+//INCLUI AS ROTAS DE USUARIOS
+include __DIR__ .'/admin/routesUserAdmin.php';

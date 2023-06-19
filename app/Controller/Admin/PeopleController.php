@@ -36,7 +36,7 @@ class PeopleController extends PageAdminController
         
         //RENDERIZA O ITEM
         while($obPerson = $results->fetchObject(PeopleEntity::class)){
-            $itens .= View::render('admin/modules/people/personItem', [
+            $itens .= View::render('admin/modules/people/peopleItem', [
                 'id'      => $obPerson->getId(),
                 'nome'    => $obPerson->getNome(),
                 'dt_nasc' => date_format($obPerson->getDtNasc(), 'd/m/Y'),
@@ -70,7 +70,6 @@ class PeopleController extends PageAdminController
 
     /**
      * Metodo que renderiza a página de cadastramento de novas pessoas
-     *@param Request $request
      * @return string
      */
     public static function getNewPeople()
@@ -119,7 +118,7 @@ class PeopleController extends PageAdminController
      *
      * @param Request $request
      * @param integer $id
-     * @return void
+     * @return string
      */
     public static function getEditPeople($request, $id)
     {
