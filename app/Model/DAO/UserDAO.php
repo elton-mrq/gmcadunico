@@ -31,6 +31,17 @@ Class UserDAO
     }
 
     /**
+     * Método que retorna usuaário por CPF
+     *
+     * @param string $cpf
+     * @return UserEntity
+     */
+    public static function getUserByCpf($cpf)
+    {
+        return self::getUsers("cpf = '" . $cpf ."'")->fetchObject(UserEntity::class);
+    }
+
+    /**
      * Método que retorna usuários do BD
      *
      * @param string $where

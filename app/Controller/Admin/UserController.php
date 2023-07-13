@@ -34,7 +34,7 @@ Class UserController extends PageAdminController
 
         //RESULTADO DO SELECT DOS DADOS DE USUARIOS CADASTRADOS
         $result = UserDAO::getUsers(null, 'id ASC', $obPagination->getLimit());
-        //echo '<pre>'; print_r($result); echo '<pre>'; exit;
+
         //RENDERIZA O ITEM
         while($obUser = $result->fetchObject(UserEntity::class)){
             $itens .= View::render('admin/modules/user/userItem', [
@@ -105,11 +105,12 @@ Class UserController extends PageAdminController
         $senha      = $postVars['senha'] ?? '';
         $statusUser = $postVars['statusUser'];
 
+        
         //VALIDA A INSTANCIA DE USUARIO
         $obUserEmail = UserDAO::getUserByEmail($email);
         if($obUserEmail instanceof UserEntity){
             //REDIRECIONA O USUARIO
-            $request->getRouter()->redirect('/admin/usuario/new?status=duplicated');
+            $request->getRouter()->redirect('/admin/usuario/new?status=emailduplicated');
         }
 
         //NOVA INSTANCIA DE USUARIO
@@ -127,7 +128,7 @@ Class UserController extends PageAdminController
 
     
     /**
-     * Método que retorna o formulário de edição de uma nova pessoa cadastrada
+     * Método que retorna o formulário de edição de um usuário cadastrado
      *@param integer $id
      *@param Request $request
      * @return string
@@ -157,6 +158,13 @@ Class UserController extends PageAdminController
         return parent::getPanel('Editar dados do usuário', $content, 'users');
     }
 
+    /**
+     * Método que grava a atualização de um usuário no BD
+     *
+     * @param Request $request
+     * @param Integer $id
+     * @return string
+     */
     public static function setEditUser($request, $id)
     {
         //OBTEM O USUARIO DO BD
@@ -166,15 +174,85 @@ Class UserController extends PageAdminController
         if(!$obUser instanceof UserEntity){
             $request->getRouter()->redirect('/admin/users');
         }
-    }
 
-    public static function getDelete($request, $id)
-    {
+        //DADOS DO POST
+        $postVars = $request->getPostVars();
+        $nome       = $postVars['nome'] ?? '';
+        $email      = $postVars['email'] ?? '';
+        $cpf        = $postVars['cpf'] ?? '';
+        $senha      = $postVars['senha'] ?? '';
+        $statusUser = $postVars['statusUser'];
+
+        //VALIDA A INSTANCIA DE USUARIO
+        $obUserEmail = UserDAO::getUserByEmail($email);
+        if($obUserEmail instanceof UserEntity && $obUserEmail->getId() != $id){
+            //REDIRECIONA O USUARIO
+            $request->getRouter()->redirect('/admin/usuario/'. $id . '/edit?status=emailduplicated');
+        }
+
+        //VALIDA A INSTANCIA DE USUARIO
+        $obUserCpf = UserDAO::getUserByCpf($cpf);
+        if($obUserCpf instanceof UserEntity && $obUserCpf->getId() != $id){
+            //REDIRECIONA O USUARIO
+            $request->getRouter()->redirect('/admin/usuario/'. $id . '/edit?status=cpfduplicated');
+        }
+
+        //ATUALIZA A INSTANCIA
+        $obUser->setNome($nome);
+        $obUser->setCpf($cpf);
+        $obUser->setEmail($email);
+        $obUser->setSenha(password_hash($senha, PASSWORD_DEFAULT));
+        $obUser->setStatus($statusUser);
         
+        //GRAVA OS DADOS
+        UserDAO::atualizar($obUser);
+
+        //REDIRECIONA O USUÁRIO PARA PAGINA DE EDICAO
+        $request->getRouter()->redirect('/admin/usuario/' . $obUser->getId() . '/edit?status=updated');
     }
 
-    public static function setDelete($request, $id)
+     /**
+     * Método que retorna o formulário de exclusão de um usuário cadastrado
+     *@param integer $id
+     *@param Request $request
+     * @return string
+     */
+    public static function getDeleteUser($request, $id)
     {
+         //OBTEM OS DADOS DO USUARIO
+         $obUser = UserDAO::getUserById($id);
+
+         //VALIDA A INSTANCIA
+         if(!$obUser instanceof UserEntity){
+             $request->getRouter()->redirect('/admin/usuarios');
+         }
+
+         $content = View::render('admin/modules/user/delete', [
+            'nome'      => $obUser->getNome(),
+            'cpf'       => $obUser->getCpf(),
+            'email'     => $obUser->getEmail(),
+            'status'    => self::getStatus($request)
+         ]);
+
+         //RETORNA A PAGINA COMPLETA
+         return parent::getPanel('Excluir dados do usuário:', $content, 'users');
+
+    }
+
+    public static function setDeleteUser($request, $id)
+    {
+        //OBTEM DADOS DO USUARIO
+        $obUser = UserDAO::getUserById($id);
+
+        //VALIDA A INSTANCIA
+        if(!$obUser instanceof UserEntity){
+            $request->getRouter()->redirect('/admin/usuarios');
+        }
+
+        UserDAO::excluir($obUser);
+
+        //REDIRECIONA O USUÁRIO
+        $request->getRouter()->redirect('/admin/usuarios/?status=deleted');
 
     }
 
@@ -197,8 +275,11 @@ Class UserController extends PageAdminController
             case 'deleted':
                 return AlertController::getSuccess('Dados do usuário excluídos com sucesso!');
                 break;
-            case 'duplicated':
+            case 'emailduplicated':
                 return AlertController::getError('O E-mail digitado já esta sendo utilizado por outro usuário!');
+                break;
+            case 'cpfduplicated':
+                return AlertController::getError('O CPF digitado já esta sendo utilizado por outro usuário!');
                 break;
         }
     }

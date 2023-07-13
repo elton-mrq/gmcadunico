@@ -66,7 +66,7 @@ class Response
      */
     public function addHeaders($key, $value)
     {
-        //echo '<pre>'; print_r($key); echo '<pre>'; exit;
+        //echo '<pre>'; print_r($key); print_r($value); echo '<pre>'; exit;
         $this->headers[$key] = $value;
     }
 
@@ -98,8 +98,11 @@ class Response
             case 'text/html':
                 echo $this->content;
                 exit;
+                case 'application/json':
+                    echo json_encode($this->content, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+                    exit;
         }
     }
 
-
+    //echo '<pre>'; print_r($obUser); echo '<pre>'; exit;
 }

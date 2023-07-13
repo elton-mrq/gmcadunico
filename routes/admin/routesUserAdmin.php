@@ -54,22 +54,22 @@ $obRouter->post('/admin/usuario/{id}/edit', [
     }
 ]);
 
-//ROTA DE EXCLUSAO DE PESSOA
-$obRouter->get('/admin/pessoa/{id}/delete', [
+//ROTA DE EXCLUSAO DE USUARIO
+$obRouter->get('/admin/usuario/{id}/delete', [
     'middlewares'       => [
         'require-admin-login'
     ],
     function($request, $id){
-        return new Response(200, Admin\PeopleController::getDeletePeople($request, $id));
+        return new Response(200, Admin\UserController::getDeleteUser($request, $id));
     }
 ]);
 
-//ROTA DE EXCLUSAO DE PESSOA (POST)
-$obRouter->post('/admin/pessoa/{id}/delete', [
+//ROTA DE EXCLUSAO DE USUARIO (POST)
+$obRouter->post('/admin/usuario/{id}/delete', [
     'middlewares'       => [
         'require-admin-login'
     ],
     function($request, $id){
-        return new Response(200, Admin\PeopleController::setDeletePeople($request, $id));
+        return new Response(200, Admin\UserController::setDeleteUser($request, $id));
     }
 ]);
