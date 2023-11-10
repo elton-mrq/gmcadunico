@@ -68,7 +68,6 @@ class LoginController extends PageAdminController
     /**
      * Método que executa o logout do usuário
      * @param Request $request
-     * @return void
      */
     public static function setLogout($request)
     {
